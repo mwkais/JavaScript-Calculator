@@ -1,0 +1,142 @@
+<!DOCTYPE=html>
+<html>
+<head>
+  <script>
+  current_number = "0";
+  current_operator = "";
+  memory = "0";
+
+
+  function update_display()
+  {
+    var mem = document.getElementById('memory');
+    var curr = document.getElementById('current');
+
+    mem.innerHTML = memory + " " + current_operator;
+    curr.innerHTML = current_number;
+  }
+  // hit numbers, have them add to current_number
+  function press_number(number)
+  {
+    if (current_number == "0")
+    {
+      current_number = number.toString();
+    }
+    else
+    {
+      current_number += number;
+    }
+    update_display();
+  }
+  function press_operator(operator)
+  {
+    do_calculation();
+    memory = current_number;
+    current_operator = operator;
+    current_number = "0";
+
+    update_display();
+  }
+
+
+  function get_operation(operator)
+     {
+       switch(operator)
+       {
+         case "+":
+           return function (a, b) { return a + b};
+           break;
+         case "-":
+           return (a, b) => {return a - b};
+           break;
+         case "*":
+           return (a, b) => {return a * b};
+           break;
+         case "/":
+           return (a, b) => {return a / b};
+           break;
+         default:
+           return (a, b) => {return b};
+       }
+     }
+  function do_calculation()
+       {
+         switch(current_operator) {
+           case '+':
+             result = Number(memory) + Number(current_number);
+             break;
+           case '-':
+             result = Number(memory) - Number(current_number);
+             break;
+           case '*':
+             result = Number(memory) * Number(current_number);
+             break;
+           case '/':
+             result = Number(memory) / Number(current_number);
+             break;
+           default:
+             result = Number(current_number);
+         }
+       current_number = result.toString();
+       memory = "0";
+       current_operator = "";
+       update_display();
+     }
+     function clear_calc()
+      {
+        current_operation = "";
+        memory_value = "0";
+        current_number = "0";
+        update_display();
+      }
+
+  </script>
+
+</head>
+<body>
+  <div class="calculator">
+    <div class="screen">
+      <div id="memory" class="memory">
+        0
+      </div>
+      <div id="current" class="current">
+        0
+      </div>
+    </div>
+
+    <div>
+      <button onclick="press_number(1)" value = "1">1</button>
+      <button onclick="press_number(2)" value = "2">2</button>
+      <button onclick="press_number(3)" value = "3">3</button>
+      <button onclick="press_operator('+')">+</button>
+    </div>
+
+    <div>
+      <button onclick="press_number(4)" value = "4">4</button>
+      <button onclick="press_number(5)" value = "5">5</button>
+      <button onclick="press_number(6)" value = "6">6</button>
+      <button onclick="press_operator('-')">-</button>
+    </div>
+
+
+    <div>
+      <button onclick="press_number(7)" value = "7">7</button>
+      <button onclick="press_number(8)" value = "8">8</button>
+      <button onclick="press_number(9)" value = "9">9</button>
+      <button onclick="press_operator('*')">x</button>
+    </div>
+
+    <div>
+      <button onclick="press_number(0)" value = "0">0</button>
+      <button>.</button>
+      <button onclick="do_calculation()">=</button>
+      <button onclick="press_operator('/')">/</button>
+    </div>
+
+    <button onClick="clear_calc()">Clr</button>
+
+</body>
+
+
+
+</html>

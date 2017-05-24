@@ -1,0 +1,160 @@
+<!DOCTYPE=html>
+<html>
+  <head>
+    <style>
+      .calculator{
+        border: black solid 1px;
+      }
+
+      .screen {
+        background-color: black;
+        color: white;
+      }
+
+      .number, .operator {
+        display: inline-block;
+        width: 20%;
+        height: 30px;
+        border: white solid 3px;
+        text-align: center;
+        line-height: 30px;
+        font-size: 15px;
+      }
+
+      .number {
+        background-color: #AAAAFF;
+      }
+      .operator {
+        background-color: orange;
+      }
+
+      .current {
+        text-align: right;
+        font-size: 40px;
+      }
+
+      .memory {
+        float: left;
+      }
+    </style>
+    <script>
+      current_number = "0";
+      memory_value = "0";
+      current_operation = "";
+
+      // copy values to visible areas (like copy current_number into the display area)
+      function update_display()
+      {
+        var mem = document.getElementById('memory');
+        var curr = document.getElementById('current');
+
+        mem.innerHTML = memory_value + " " + current_operation;
+        curr.innerHTML = current_number;
+      }
+
+      // hit numbers, have them add to current_number
+      function press_number(number)
+      {
+        if (current_number == "0")
+        {
+          current_number = number.toString();
+        }
+        else
+        {
+          current_number += number;
+        }
+        update_display();
+      }
+      // hit operators, this should copy current_number into memory, set operator value, set current_number to 0
+      function press_operator(operator)
+      {
+        do_calculation();
+        memory_value = current_number;
+        current_operation = operator;
+        current_number = "0";
+
+        update_display();
+      }
+      // hit equal operator to show final result
+      // take memory (operator) current = result
+      // clear memory and current operator
+      // put result in current_number
+
+      function do_calculation()
+      {
+        get_result = get_operation(current_operation);
+        result = get_result(Number(memory_value), Number(current_number));
+        current_number = result.toString();
+        memory_value = "0";
+        current_operation = "";
+        update_display();
+      }
+
+      // clear everything
+      function clear_calc()
+      {
+        current_operation = "";
+        memory_value = "0";
+        current_number = "0";
+        update_display();
+      }
+
+      function get_operation(operator)
+      {
+        switch(operator)
+        {
+          case "+":
+            return function (a, b) {return a + b};
+            break;
+          case "-":
+            return (a, b) => {return a - b};
+            break;
+          case "*":
+            return (a, b) => {return a * b};
+            break;
+          case "/":
+            return (a, b) => {return a / b};
+            break;
+          default:
+            return (a, b) => {return b};
+        }
+      }
+
+
+    </script>
+  </head>
+  <body>
+    <div class="calculator">
+      <div class="screen">
+        <div id="memory" class="memory">
+          Rory hates this display
+        </div>
+        <div id="current" class="current">
+          what would you dies
+        </div>
+      </div>
+      <div class="buttons">
+        <div class="number" onClick="press_number(1)">1</div>
+        <div class="number" onClick="press_number(2)">2</div>
+        <div class="number" onClick="press_number(3)">3</div>
+        <div class="operator" onClick="press_operator('+')">+</div>
+
+        <div class="number" onClick="press_number(4)">4</div>
+        <div class="number" onClick="press_number(5)">5</div>
+        <div class="number" onClick="press_number(6)">6</div>
+        <div class="operator" onClick="press_operator('-')">-</div>
+
+        <div class="number" onClick="press_number(7)">7</div>
+        <div class="number" onClick="press_number(8)">8</div>
+        <div class="number" onClick="press_number(9)">9</div>
+        <div class="operator" onClick="press_operator('*')">*</div>
+
+        <div class="operator" onClick="clear_calc()">C</div>
+        <div class="number" onClick="press_number(0)">0</div>
+        <div class="operator" onClick="do_calculation()">=</div>
+        <div class="operator" onClick="press_operator('/')">/</div>
+
+      </div>
+    </div>
+  </body>
+</html>
